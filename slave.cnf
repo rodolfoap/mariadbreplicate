@@ -7,5 +7,5 @@
 # Not strictly necessary, but recommended
 log-bin
 
-# This must be different between master and slave
+# Must be unique, probably master is 1
 server_id=2
