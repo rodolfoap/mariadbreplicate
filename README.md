@@ -2,7 +2,19 @@
 
 This is a typical simple case of master/slave replication. See https://mariadb.com/kb/en/setting-up-replication/
 
-## 1. MASTER configuration file
+## TLDR; Using `docker-compose`
+
+The full procedure can be triggered as this:
+```
+docker-compose up -d # will take about 15 seconds
+./setup_master
+./setup_slave
+./setup_db
+```
+
+## Detailed process
+
+### 1. MASTER configuration file
 
 To start, configure the master `/etc/mysql/conf.d/mariadb.cnf` file:
 ```
@@ -16,7 +28,7 @@ log-bin
 server_id=1
 ```
 
-## 2. SLAVE configuration file
+### 2. SLAVE configuration file
 
 Same thing for the slave `/etc/mysql/conf.d/mariadb.cnf` file:
 ```
@@ -31,7 +43,7 @@ log-bin
 server_id=2
 ```
 
-## 3. MASTER setup
+### 3. MASTER setup
 
 Launch the servers, and setup master:
 ```
@@ -50,7 +62,7 @@ Binlog_Ignore_DB:
 ```
 Remark the ***File*** and the ***Position*** values.
 
-## 4. SLAVE setup
+### 4. SLAVE setup
 
 Now, setup the slave using the ***File*** and the ***Position*** values:
 ```
@@ -66,7 +78,7 @@ CHANGE MASTER TO
 START SLAVE;
 ```
 
-## 5. Test Replication
+### 5. Test Replication
 
 Now, let's create a database and populate it on the **master**, and query it on the **slave**:
 ```
@@ -102,3 +114,4 @@ id	name	email	HOST
 1	Martin Caraffe	martin_caraffe@company.com	SLAVE
 2	Josef Burratto	josef_burratto@company.com	SLAVE
 ```
+
