@@ -2,7 +2,7 @@
 
 This is a typical simple case of master/slave replication. See https://mariadb.com/kb/en/setting-up-replication/
 
-## TLDR; Using `docker-compose`
+## TL;DR: Usage
 
 The full procedure can be triggered as this:
 ```
