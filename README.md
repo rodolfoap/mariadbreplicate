@@ -52,7 +52,7 @@ Remark the ***File*** and the ***Position*** values.
 
 ## 4. SLAVE setup
 
-Now, setup the slave:
+Now, setup the slave using the ***File*** and the ***Position*** values:
 ```
 CHANGE MASTER TO
   MASTER_HOST='master',
@@ -83,7 +83,6 @@ SELECT *, "MASTER" as HOST FROM clients;
 --------------
 SELECT *, "MASTER" as HOST FROM clients
 --------------
-
 id	name	email	HOST
 1	Martin Caraffe	martin_caraffe@company.com	MASTER
 2	Josef Burratto	josef_burratto@company.com	MASTER
@@ -99,7 +98,6 @@ SELECT *, "SLAVE" as HOST FROM clients;
 --------------
 SELECT *, "SLAVE" as HOST FROM clients
 --------------
-
 id	name	email	HOST
 1	Martin Caraffe	martin_caraffe@company.com	SLAVE
 2	Josef Burratto	josef_burratto@company.com	SLAVE
