@@ -1,0 +1,11 @@
+# See https://mariadb.com/kb/en/setting-up-replication/
+
+[client]
+
+[mariadb]
+
+# Not strictly necessary, but recommended
+log-bin
+
+# This must be different between master and slave
+server_id=2

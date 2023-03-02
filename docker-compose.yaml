@@ -1,0 +1,61 @@
+version: '3'
+networks:
+  net_mariadb:
+    name: net_mariadb
+    driver: bridge
+
+services:
+
+  # ___________________________________________________________ MariaDB: Master
+  master:
+    container_name: master
+    image: mariadb:10.11.2
+    environment:
+      - MARIADB_USER=mysql
+      - MARIADB_PASSWORD=password
+      - MARIADB_ROOT_PASSWORD=password
+    ports:
+      - 3306:3306
+    volumes:
+      - ./master.cnf:/etc/mysql/conf.d/mariadb.cnf
+    networks:
+      - net_mariadb
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=password --execute \"SHOW DATABASES;\""
+      interval: 1s
+      timeout:  1s
+      retries:  30
+
+  # ___________________________________________________________ MariaDB: Slave
+  slave:
+    container_name: slave
+    image: mariadb:10.11.2
+    environment:
+      - MARIADB_USER=mysql
+      - MARIADB_PASSWORD=password
+      - MARIADB_ROOT_PASSWORD=password
+    ports:
+      - 3307:3306
+    volumes:
+      - ./slave.cnf:/etc/mysql/conf.d/mariadb.cnf
+    networks:
+      - net_mariadb
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=password --execute \"SHOW DATABASES;\""
+      interval: 1s
+      timeout:  1s
+      retries:  30
+
+  # ___________________________________________________________ Adminer
+  adminer:
+    container_name: adminer
+    image: adminer
+    ports:
+      - 8000:8080
+    networks:
+      - net_mariadb
+    depends_on:
+      master:
+        condition: service_healthy
+      slave:
+        condition: service_healthy

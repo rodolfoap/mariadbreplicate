@@ -1,0 +1,18 @@
+#!/bin/bash
+
+docker exec -i master /usr/bin/mysql -v --user root -ppassword <<EOF
+CREATE USER 'replication_user'@'%' IDENTIFIED BY 'password';
+GRANT REPLICATION SLAVE ON *.* TO 'replication_user'@'%';
+EOF
+
+docker exec -i master /usr/bin/mysql -v --user root -ppassword <<EOF >.status
+SHOW MASTER STATUS \G;
+EOF
+cat .status
+grep '\*\**' .status
+
+cat .status |grep Position: |awk '{print $2}' >.position
+echo Position: $(cat .position)
+
+cat .status |grep File:     |awk '{print $2}' >.file
+echo File: $(cat .file)

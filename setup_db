@@ -1,0 +1,16 @@
+#!/bin/bash
+
+docker exec -i master /usr/bin/mysql -v --user root -ppassword <<EOF
+CREATE DATABASE test;
+USE test;
+CREATE TABLE clients (id INT, name VARCHAR(64), email VARCHAR(64));
+INSERT INTO  clients (id, name, email) VALUES (01, "Martin Caraffe", "martin_caraffe@company.com");
+INSERT INTO  clients (id, name, email) VALUES (02, "Josef Burratto", "josef_burratto@company.com");
+
+SELECT *, "MASTER" as HOST FROM clients;
+EOF
+
+docker exec -i slave /usr/bin/mysql -v --user root -ppassword <<EOF
+USE test;
+SELECT *, "SLAVE" as HOST FROM clients;
+EOF
